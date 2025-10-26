@@ -1,0 +1,14 @@
+{
+  "name": "@ohohua/common",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "apps共用的代码",
+  "author": "ohohua",
+  "license": "MIT",
+  "keywords": [],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsup"
+  }
+}

@@ -1,0 +1,37 @@
+import { Global, Logger, Module } from '@nestjs/common'
+import { ConfigModule } from '@nestjs/config'
+import { JwtModule } from '@nestjs/jwt'
+import { AuthModule } from './auth/auth.module'
+import { AuthProvider } from './providers/auth.provider'
+import { DB, DbProvider } from './providers/db.provider'
+
+const logger = new Logger('Global')
+
+const envConfig = {
+  production: '.env.prod',
+  development: '.env.dev',
+}
+
+const envFilePath = envConfig[process.env.NODE_ENV!] || '.env'
+logger.log(process.env.NODE_ENV)
+
+@Global()
+@Module({
+  imports: [
+    ConfigModule.forRoot({
+      envFilePath,
+      isGlobal: true,
+    }),
+    JwtModule.register({
+      global: true,
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: '1h' },
+    }),
+    AuthModule.forRoot({
+      global: true,
+    }),
+  ],
+  providers: [DbProvider, AuthProvider],
+  exports: [DB],
+})
+export class GlobalModule {}

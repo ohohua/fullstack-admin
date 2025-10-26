@@ -1,0 +1,55 @@
+{
+  "name": "fullstack-template",
+  "version": "1.0.0",
+  "packageManager": "pnpm@10.15.0",
+  "description": "admin",
+  "author": "ohohua",
+  "license": "MIT",
+  "keywords": [],
+  "scripts": {
+    "preinstall": "pnpm dlx only-allow pnpm",
+    "depend:init": "pnpm --filter @ohohua/common run build",
+    "db:init": "pnpm --filter @ohohua/schema run build && pnpm --filter @ohohua/db run init",
+    "db:studio": "pnpm --filter @ohohua/db db:studio",
+    "docker:start": "docker-compose up -d",
+    "docker:stop": "docker compose stop",
+    "docker:delete": "docker compose down",
+    "docker:down": "docker compose down --volumes",
+    "dev": "concurrently \"pnpm run dev:admin\" \"pnpm run dev:server\"",
+    "dev:admin": "pnpm run --filter admin dev",
+    "dev:server": "pnpm run --filter server start:debug",
+    "build:admin": "pnpm run --filter admin build",
+    "build:server": "pnpm run --filter server build",
+    "look:package": "find . -name 'node_modules' -type d -prune | xargs du -chs",
+    "del:package": "find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +",
+    "lint": "eslint --fix '{apps/**/src,packages/**/src}/**/*.{js,jsx,ts,tsx}'"
+  },
+  "dependencies": {
+    "@nestjs/mapped-types": "*",
+    "axios": "^1.7.9",
+    "dayjs": "^1.11.13"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^4.3.0",
+    "@eslint-react/eslint-plugin": "^1.27.0",
+    "@types/node": "^22.13.4",
+    "concurrently": "^9.2.0",
+    "dotenv": "^16.4.7",
+    "eslint": "^9.20.1",
+    "eslint-plugin-format": "^1.0.1",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
+    "lint-staged": "^15.4.3",
+    "mockjs": "^1.1.0",
+    "picocolors": "^1.1.1",
+    "simple-git-hooks": "^2.11.1",
+    "tsup": "^8.3.6",
+    "tsx": "^4.19.3",
+    "typescript": "^5.7.3",
+    "unplugin-auto-import": "^19.1.0"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm exec lint-staged",
+    "commit-msg": "node ./scripts/verify-commit.js"
+  }
+}
