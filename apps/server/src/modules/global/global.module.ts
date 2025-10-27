@@ -4,6 +4,7 @@ import { JwtModule } from '@nestjs/jwt'
 import { AuthModule } from './auth/auth.module'
 import { AuthProvider } from './providers/auth.provider'
 import { DB, DbProvider } from './providers/db.provider'
+import { PaginationModule } from './pagination/pagination.module';
 
 const logger = new Logger('Global')
 
@@ -30,6 +31,7 @@ logger.log(process.env.NODE_ENV)
     AuthModule.forRoot({
       global: true,
     }),
+    PaginationModule,
   ],
   providers: [DbProvider, AuthProvider],
   exports: [DB],

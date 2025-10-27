@@ -26,14 +26,14 @@ export class Api {
    * 分页查询角色
    */
   static page(params: ApiUtil.WithPaginationParams<ListSearchParams>) {
-    return http.get<ApiUtil.PaginationResponse<Role>>('/system/role/page', { params })
+    return http.get<ApiUtil.PaginationResponse<Role>>('/role/page', { params })
   }
 
   /**
    * 获取角色详情
    */
   static get(id: string) {
-    return http.get<Role>(`/system/role/${id}`)
+    return http.get<Role>(`/role/${id}`)
   }
 
   /**
@@ -42,7 +42,7 @@ export class Api {
   static insertOrUpdate(data: SetOptional<Role, 'id'>) {
     return http({
       method: isNil(data.id) ? 'post' : 'put',
-      url: '/system/role',
+      url: '/role',
       data,
     })
   }
@@ -51,6 +51,6 @@ export class Api {
    * 删除角色
    */
   static del(id: string) {
-    return http.delete(`/system/role/${id}`)
+    return http.delete(`/role/${id}`)
   }
 }

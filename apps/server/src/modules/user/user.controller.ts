@@ -1,8 +1,8 @@
-import { Body, Controller, Get, HttpStatus, Post, Query } from '@nestjs/common'
+import { Body, Controller, Delete, Get, HttpStatus, Post, Query } from '@nestjs/common'
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { Auth } from 'src/common/decorators/auth.decorator'
 import { UserInfo } from 'src/common/decorators/user-info.decorator'
-import { LoginDto, QueryUserDto, RegisterDto } from './model/user.dto'
+import { AddOrUpdateUserDto, LoginDto, QueryUserDto, RegisterDto } from './model/user.dto'
 import { InfoVo, LoginVo, RegisterVo } from './model/user.vo'
 import { UserService } from './user.service'
 
@@ -46,6 +46,22 @@ export class UserController {
   @Auth()
   @Get('page')
   async list(@Query() query: QueryUserDto) {
+    return await this.service.list(query)
+  }
+
+  @ApiOperation({ summary: '新增/编辑用户' })
+  @ApiResponse({ type: InfoVo, status: HttpStatus.OK, description: '请求成功' })
+  @Auth()
+  @Post('addOrUpdate')
+  async addOrUpdate(@Body() dto: AddOrUpdateUserDto) {
+    return await this.service.addOrUpdate(dto)
+  }
+
+  @ApiOperation({ summary: '删除用户' })
+  @ApiResponse({ type: InfoVo, status: HttpStatus.OK, description: '请求成功' })
+  @Auth()
+  @Delete('add')
+  async del(@Query() query: QueryUserDto) {
     return await this.service.list(query)
   }
 }

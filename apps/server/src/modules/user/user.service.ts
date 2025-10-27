@@ -5,8 +5,8 @@ import { eq, like, and, getTableColumns, sql } from 'drizzle-orm'
 import { AuthService } from 'src/modules/global/auth/auth.service'
 import { decryptPassword } from 'src/utils/rsa'
 import { DB, DbType } from '../global/providers/db.provider'
-import { LoginDto, QueryUserDto, RegisterDto } from './model/user.dto'
-import { cond, isNil } from 'lodash-es'
+import { AddOrUpdateUserDto, LoginDto, QueryUserDto, RegisterDto } from './model/user.dto'
+import { PaginationService } from '../global/pagination/pagination.service'
 
 const logger = new Logger('UserService')
 @Injectable()
@@ -19,6 +19,9 @@ export class UserService {
 
   @Inject(AuthService)
   private authService: AuthService
+
+  @Inject(PaginationService)
+  private paginationService: PaginationService
 
   async addDefaultAdmin() {
     await this.db.insert(user).values({
@@ -97,32 +100,39 @@ export class UserService {
 
   async list(query: QueryUserDto) {
     const { page, pageSize, username, nickname, gender, status } = query
-    const offset = (page - 1) * pageSize
 
-    const usernameClause = username ? like(user.username, `%${username}%`) : void 0;
-    const nicknameClause = nickname ? like(user.nickname, `%${nickname}%`) : void 0;
-    const genderClause = gender !== void 0 ? eq(user.gender, gender) : void 0
-    const statusClause = status !== void 0 ? eq(user.status, status) : void 0
+    const conditions = [
+      this.paginationService.likeCondition(user.username, username),
+      this.paginationService.likeCondition(user.nickname, nickname),
+      this.paginationService.eqCondition(user.gender, gender),
+      this.paginationService.eqCondition(user.status, status),
+    ].filter(Boolean);
+
+    const where = conditions.length > 0 ? and(...conditions) : undefined;
 
     const { password, ...rest } = getTableColumns(user)
-
-    const users = await this.db.select(
+    // 2. 调用通用分页方法
+    return this.paginationService.paginate(
+      user,
       {
-        ...rest,
-        total: sql<number>`COUNT(*) OVER()`, // 使用窗口函数计算总数
-      }
-    )
-      .from(user)
-      .where(and(usernameClause, nicknameClause, genderClause, statusClause))
-      .limit(pageSize)
-      .offset(offset)
+        page,
+        pageSize
+      },
+      where,
+      {
+        columns: { ...rest },
+        orderBy: { createTime: 'desc' },
+      })
+  }
 
-    const list = users.map(({ total, ...item }) => item)
-    const total = users.length > 0 ? users[0].total : 0
-
-    return {
-      list,
-      total
+  async addOrUpdate(dto: AddOrUpdateUserDto) {
+    const { id, ...rest } = dto
+    if (id) {
+      // 更新用户
+      return await this.db.update(user).set({ ...rest }).where(eq(user.id, id))
+    } else {
+      // 新增用户
+      return await this.db.insert(user).values({ ...rest })
     }
   }
 }

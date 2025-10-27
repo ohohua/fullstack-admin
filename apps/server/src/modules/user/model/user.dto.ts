@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsNotEmpty, IsOptional, Length } from 'class-validator'
+import { IsEmail, IsNotEmpty, IsOptional, Length } from 'class-validator'
 import { Type } from 'class-transformer';
 import { QueryPageDto } from 'src/common/model/page.dto';
 
@@ -56,5 +56,53 @@ export class QueryUserDto extends QueryPageDto {
   @Type(() => Number)
   @IsOptional()
   status: number
+}
+
+export class AddOrUpdateUserDto {
+  @IsOptional()
+  @ApiProperty({ description: '用户ID', required: false })
+  id?: string
+
+  @IsNotEmpty({ message: '用户名不能为空' })
+  @Length(2, 20, { message: '用户名长度为2-20位' })
+  @ApiProperty({ description: '用户名', required: true })
+  username: string
+
+  @IsNotEmpty({ message: '用户昵称不能为空' })
+  @Length(2, 20, { message: '用户昵称长度为2-20位' })
+  @ApiProperty({ description: '用户昵称', required: true })
+  nickname: string
+
+  @IsNotEmpty({ message: '性别不能为空' })
+  @ApiProperty({ description: '性别', required: true })
+  @Type(() => Number)
+  gender: number
+
+  @IsNotEmpty({ message: '密码不能为空' })
+  @Length(2, 20, { message: '用户密码长度为2-20位' })
+  @ApiProperty({ description: '密码', required: true })
+  password: string
+
+  @IsNotEmpty({ message: '邮箱不能为空' })
+  @IsEmail({}, { message: '邮箱格式不正确' })
+  @ApiProperty({ description: '邮箱' })
+  email: string
+
+  @IsNotEmpty({ message: '手机号不能为空' })
+  @ApiProperty({ description: '手机号', required: false })
+  phone: string
+
+  @ApiProperty({ description: '备注', required: false })
+  @IsOptional()
+  remark?: string
+
+  @IsNotEmpty({ message: '状态不能为空' })
+  @ApiProperty({ description: '状态', required: true })
+  @Type(() => Number)
+  status: number
+
+  @ApiProperty({ description: '所属角色', required: true })
+  @IsNotEmpty({ message: '所属角色不能为空' })
+  roles: string[]
 }
 

@@ -4,15 +4,19 @@ import { AppService } from './app.service'
 import { MinioModule } from './common/minio/minio.module'
 import { GlobalModule } from './modules/global/global.module'
 import { UserModule } from './modules/user/user.module'
+import { RoleModule } from './modules/role/role.module'
+import { MenuModule } from './modules/menu/menu.module'
 
 @Module({
   imports: [
     GlobalModule,
     UserModule,
-    MinioModule
+    MinioModule,
+    RoleModule,
+    MenuModule
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 
-export class AppModule {}
+export class AppModule { }

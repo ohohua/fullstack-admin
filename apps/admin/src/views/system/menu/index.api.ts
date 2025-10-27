@@ -30,7 +30,7 @@ export class Api {
    * 查询所有菜单
    */
   static list() {
-    return http.get<Menu[]>('/system/menu/list')
+    return http.get<Menu[]>('/menu/list')
   }
 
   /**
@@ -39,7 +39,7 @@ export class Api {
   static insertOrUpdate(data: Merge<SetOptional<Menu, 'id'>, { parentId: null | string }>) {
     return http({
       method: isNil(data.id) ? 'post' : 'put',
-      url: '/system/menu',
+      url: '/menu',
       data,
     })
   }
@@ -48,6 +48,6 @@ export class Api {
    * 删除菜单
    */
   static del(id: string) {
-    return http.delete(`/system/menu/${id}`)
+    return http.delete(`/menu/${id}`)
   }
 }
