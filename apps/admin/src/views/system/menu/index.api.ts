@@ -1,15 +1,16 @@
-import type { Merge, SetOptional } from 'type-fest'
+import type { Merge, SetOptional, StringKeyOf } from 'type-fest'
+import type { StringToNumber } from 'type-fest/source/internal'
 import type { linkModeMapping, typeMapping } from './utils/constants'
 import http from '@/utils/axios'
 import { isNil } from 'lodash-es'
 
-type TypeEnum = keyof typeof typeMapping
-type LinkModeEnum = keyof typeof linkModeMapping
+type TypeEnum = StringKeyOf<typeof typeMapping>
+type LinkModeEnum = StringKeyOf<typeof linkModeMapping>
 
 export interface Menu {
   id: string
   path: string
-  type: TypeEnum
+  type: StringToNumber<TypeEnum>
   component?: string
   children?: Menu[]
   meta?: {

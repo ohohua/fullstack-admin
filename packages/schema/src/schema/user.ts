@@ -1,6 +1,6 @@
-import { relations } from 'drizzle-orm'
-import { int, mysqlTable, timestamp, varchar } from 'drizzle-orm/mysql-core'
-import { createId, userRole } from './index'
+import { datetime, int, mysqlTable, varchar } from 'drizzle-orm/mysql-core'
+import { createId } from './index'
+import { sql } from 'drizzle-orm'
 
 export const user = mysqlTable('user', {
   id: varchar('id', { length: 10 })
@@ -14,11 +14,12 @@ export const user = mysqlTable('user', {
   phone: varchar({ length: 20 }).notNull(),
   remark: varchar({ length: 255 }),
   status: int().default(0),
-  createTime: timestamp('create_time').notNull().defaultNow(),
-  updatedTime: timestamp('updated_time').notNull().defaultNow().onUpdateNow(),
+
+  createTime: datetime('create_time', { mode: 'string' })
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`),
+  updateTime: datetime('update_time', { mode: 'string' })
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`), 
 })
 
-export const usersRelations = relations(user, ({ many }) => ({
-  // 用户关联的角色（通过 userRoles 中间表）
-  roles: many(userRole),
-}))

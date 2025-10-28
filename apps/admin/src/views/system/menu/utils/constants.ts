@@ -1,9 +1,9 @@
 import { createOptionsAndMapping } from '@/utils/common'
 
 export const menuTypeEnum = {
-  DIRECTORY: '0',
-  MENU: '1',
-  // BUTTON: '2',
+  DIRECTORY: 0,
+  MENU: 1,
+  // BUTTON: 2,
 } as const
 
 export const {

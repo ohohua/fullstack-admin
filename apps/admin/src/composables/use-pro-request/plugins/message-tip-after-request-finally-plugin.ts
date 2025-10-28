@@ -2,6 +2,7 @@ import type { UseProRequestPlugin } from '../types'
 import { isFunction } from 'lodash-es'
 import { useMessage } from 'naive-ui'
 import { $t, isI18nKey } from '@/locales/locales'
+import type { AxiosError } from 'axios'
 
 declare module '../types' {
   interface UseProRequestOptions<Data, Params extends any[]> {
@@ -43,7 +44,7 @@ export const messageTipAfterRequestFinallyPlugin: UseProRequestPlugin<any, any[]
   function resolveErrorMessage(error: Error, params: any[]) {
     if (errorTip === undefined) {
       // 可以在这里区分错误类型
-      return error.message
+      return (error as AxiosError<{ message: string }>)?.response?.data?.message
     }
     if (errorTip === false || errorTip === '') {
       return ''

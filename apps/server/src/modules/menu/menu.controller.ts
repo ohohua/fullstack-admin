@@ -1,16 +1,17 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Query } from '@nestjs/common';
-import { MenuService } from './menu.service';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Auth } from 'src/common/decorators/auth.decorator';
-import { RoleInfoVo, RoleListVo, QueryRolePageDto, AddOrUpdateRoleDto } from '../role/model/role.vo';
+import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Query } from '@nestjs/common'
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { Auth } from 'src/common/decorators/auth.decorator'
+import { MenuService } from './menu.service'
+import { AddOrUpdateMenuDto, QueryMenuPageDto } from './model/menu.dto'
+import { MenuInfoVo, MenuListVo } from './model/menu.vo'
 
 @ApiTags('菜单管理')
 @Controller('menu')
 export class MenuController {
-  constructor(private readonly menuService: MenuService) {}
+  constructor(private readonly menuService: MenuService) { }
 
   @ApiOperation({ summary: '菜单信息' })
-  @ApiResponse({ type: RoleInfoVo, status: HttpStatus.OK, description: '请求成功' })
+  @ApiResponse({ type: MenuInfoVo, status: HttpStatus.OK, description: '请求成功' })
   @Auth()
   @Get('info/:id')
   async info(@Param('id') id: string) {
@@ -18,25 +19,33 @@ export class MenuController {
   }
 
   @ApiOperation({ summary: '菜单列表' })
-  @ApiResponse({ type: RoleListVo, status: HttpStatus.OK, description: '请求成功' })
+  @ApiResponse({ type: MenuListVo, status: HttpStatus.OK, description: '请求成功' })
   @Auth()
-  @Get('page')
-  async list(@Query() query: QueryRolePageDto) {
+  @Get('list')
+  async list(@Query() query: QueryMenuPageDto) {
     return await this.menuService.list(query)
   }
 
-  @ApiOperation({ summary: '新增/编辑菜单' })
+  @ApiOperation({ summary: '新增菜单' })
   @ApiResponse({ type: String, status: HttpStatus.OK, description: '请求成功' })
   @Auth()
-  @Post('addOrUpdate')
-  async addOrUpdate(@Body() dto: AddOrUpdateRoleDto) {
+  @Post()
+  async insert(@Body() dto: AddOrUpdateMenuDto) {
+    return await this.menuService.addOrUpdate(dto)
+  }
+
+  @ApiOperation({ summary: '更新菜单' })
+  @ApiResponse({ type: String, status: HttpStatus.OK, description: '请求成功' })
+  @Auth()
+  @Put()
+  async update(@Body() dto: AddOrUpdateMenuDto) {
     return await this.menuService.addOrUpdate(dto)
   }
 
   @ApiOperation({ summary: '删除菜单' })
   @ApiResponse({ type: String, status: HttpStatus.OK, description: '请求成功' })
   @Auth()
-  @Delete('del/:id')
+  @Delete(':id')
   async del(@Param('id') id: string) {
     return await this.menuService.del(id)
   }

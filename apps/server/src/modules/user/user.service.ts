@@ -1,12 +1,12 @@
 import { BadRequestException, Inject, Injectable, Logger } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { role, user, userRole } from '@ohohua/schema'
-import { eq, like, and, getTableColumns, sql } from 'drizzle-orm'
+import { and, eq, getTableColumns } from 'drizzle-orm'
 import { AuthService } from 'src/modules/global/auth/auth.service'
 import { decryptPassword } from 'src/utils/rsa'
+import { PaginationService } from '../global/pagination/pagination.service'
 import { DB, DbType } from '../global/providers/db.provider'
 import { AddOrUpdateUserDto, LoginDto, QueryUserDto, RegisterDto } from './model/user.dto'
-import { PaginationService } from '../global/pagination/pagination.service'
 
 const logger = new Logger('UserService')
 @Injectable()
@@ -27,7 +27,7 @@ export class UserService {
     await this.db.insert(user).values({
       username: 'super',
       nickname: '超级管理员',
-      password: '123455',
+      password: '123456',
       email: 'ohohua@163.com',
       phone: '18900000000',
       gender: -1,
@@ -106,32 +106,32 @@ export class UserService {
       this.paginationService.likeCondition(user.nickname, nickname),
       this.paginationService.eqCondition(user.gender, gender),
       this.paginationService.eqCondition(user.status, status),
-    ].filter(Boolean);
+    ].filter(Boolean)
 
-    const where = conditions.length > 0 ? and(...conditions) : undefined;
+    const where = conditions.length > 0 ? and(...conditions) : undefined
 
     const { password, ...rest } = getTableColumns(user)
-    // 2. 调用通用分页方法
+
     return this.paginationService.paginate(
       user,
       {
         page,
-        pageSize
+        pageSize,
       },
       where,
       {
         columns: { ...rest },
         orderBy: { createTime: 'desc' },
-      })
+      },
+    )
   }
 
   async addOrUpdate(dto: AddOrUpdateUserDto) {
     const { id, ...rest } = dto
     if (id) {
-      // 更新用户
       return await this.db.update(user).set({ ...rest }).where(eq(user.id, id))
-    } else {
-      // 新增用户
+    }
+    else {
       return await this.db.insert(user).values({ ...rest })
     }
   }

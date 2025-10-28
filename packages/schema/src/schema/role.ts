@@ -1,6 +1,6 @@
-import { relations } from 'drizzle-orm'
-import { int, mysqlTable, text, timestamp, varchar } from 'drizzle-orm/mysql-core'
-import { createId, rolePermission, userRole } from './index'
+import { datetime, int, mysqlTable, text, varchar } from 'drizzle-orm/mysql-core'
+import { createId } from './index'
+import { sql } from 'drizzle-orm'
 
 export const role = mysqlTable('role', {
   id: varchar('id', { length: 10 })
@@ -10,17 +10,12 @@ export const role = mysqlTable('role', {
   code: varchar({ length: 20 }).notNull().unique(),
   remark: text(),
   status: int().notNull().default(0),
-  createTime: timestamp('create_time').notNull().defaultNow(),
-  updatedTime: timestamp('updated_time').notNull().defaultNow().onUpdateNow(),
-})
 
-/**
- * 定义表关系（relations）
- * 用于查询时自动关联数据（不影响数据库物理结构）
- */
-export const rolesRelations = relations(role, ({ many }) => ({
-  // 角色关联的权限（通过 rolePermissions 中间表）
-  permissions: many(rolePermission),
-  // 角色关联的用户（通过 userRoles 中间表）
-  users: many(userRole),
-}))
+  createTime: datetime('create_time', { mode: 'string' })
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`),
+  // 更新时间：自动更新为当前时间
+  updateTime: datetime('update_time', { mode: 'string' })
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`),
+})

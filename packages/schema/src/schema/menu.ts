@@ -1,4 +1,5 @@
-import { boolean, int, mysqlTable, text, timestamp, varchar } from 'drizzle-orm/mysql-core'
+import { sql } from 'drizzle-orm'
+import { boolean, datetime, int, mysqlTable, text, varchar } from 'drizzle-orm/mysql-core'
 import { createId } from '.'
 
 export const menu = mysqlTable('menu', {
@@ -6,6 +7,10 @@ export const menu = mysqlTable('menu', {
     .primaryKey()
     .$defaultFn(() => createId()),
 
+  /**
+   * 父级菜单id
+   */
+  parentId: varchar('parent_id', { length: 10 }),
   /**
    * 菜单类型：0-目录，1-菜单
    */
@@ -17,7 +22,7 @@ export const menu = mysqlTable('menu', {
   /**
    * 前端组件
    */
-  component: varchar({ length: 255 }).notNull(),
+  component: varchar({ length: 255 }),
   /**
    * 图标
    */
@@ -27,9 +32,9 @@ export const menu = mysqlTable('menu', {
    */
   titleI18nKey: varchar({ length: 255 }),
   /**
-   * 外链模式 0-内嵌 1-外链
+   * 外链模式 iframe-内嵌 newWindow-外链
    */
-  linkMode: int('link_mode').notNull().default(0),
+  linkMode: varchar('link_mode', { length: 20 }),
   // meta
   /**
    * 菜单标题
@@ -64,6 +69,11 @@ export const menu = mysqlTable('menu', {
    */
   layout: boolean().default(false),
 
-  createTime: timestamp('create_time').notNull().defaultNow(),
-  updatedTime: timestamp('updated_time').notNull().defaultNow().onUpdateNow(),
+  createTime: datetime('create_time', { mode: 'string' })
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`),
+  // 更新时间：自动更新为当前时间
+  updateTime: datetime('update_time', { mode: 'string' })
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`),
 })

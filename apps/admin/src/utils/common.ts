@@ -37,15 +37,15 @@ export function createOptionsAndMapping<
     },
     get mapping() {
       return Object.fromEntries(data) as {
-        [K in T[number] as `${K[0]}`]: K[1]
+        [K in T[number]as `${K[0]}`]: K[1]
       }
     },
     get mapping2() {
       return Object.fromEntries(
         data.map(([value, , customValue]) => [value, customValue]),
       ) as {
-        [K in T[number] as `${K[0]}`]: K extends [any, any, infer X, ...any[]] ? X : void
-      }
+          [K in T[number]as `${K[0]}`]: K extends [any, any, infer X, ...any[]] ? X : void
+        }
     },
   }
 }
@@ -66,12 +66,12 @@ export function translateOptions<T extends Recordable[]>(options: T) {
     ...rest,
     label: $t(label),
   })) as {
-    [Item in keyof T]: T[Item] extends {
-      label: MaybeI18nKeyPath
-      [x: PropertyKey]: any
-    } ? Merge<T[Item], {
-      label: Translate<T[Item]['label']>
-    }>
+      [Item in keyof T]: T[Item] extends {
+        label: MaybeI18nKeyPath
+        [x: PropertyKey]: any
+      } ? Merge<T[Item], {
+        label: Translate<T[Item]['label']>
+      }>
       : T[Item]
-  }
+    }
 }

@@ -1,9 +1,12 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
-import { menu } from '@ohohua/schema';
-import { eq, and, getTableColumns } from 'drizzle-orm';
-import { PaginationService } from '../global/pagination/pagination.service';
-import { DB, DbType } from '../global/providers/db.provider';
-import { QueryRolePageDto, AddOrUpdateRoleDto } from '../role/model/role.vo';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common'
+import { menu } from '@ohohua/schema'
+import { instanceToPlain, plainToInstance } from 'class-transformer'
+import { eq } from 'drizzle-orm'
+import { omit, pick } from 'lodash'
+import { PaginationService } from '../global/pagination/pagination.service'
+import { DB, DbType } from '../global/providers/db.provider'
+import { AddOrUpdateMenuDto, QueryMenuPageDto } from './model/menu.dto'
+import { MenuListVo, MenuMetaVo } from './model/menu.vo'
 
 @Injectable()
 export class MenuService {
@@ -13,49 +16,68 @@ export class MenuService {
   @Inject(PaginationService)
   private paginationService: PaginationService
 
+  private buildTree(menus: MenuListVo[], parentId: string | null) {
+    // 1. 筛选出当前父节点的直接子节点（parentId 等于传入的 parentId）
+    const children = menus.filter(menu => menu.parentId === parentId)
+
+    // 2. 递归为每个子节点查找其下的子节点
+    return children.map(child => ({
+      ...child, // 复制当前节点的所有属性
+      children: this.buildTree(menus, child.id), // 递归查找子节点的子节点
+    }))
+  }
+
   async info(id: string) {
     return await this.db.query.role.findFirst({
-      where: eq(menu.id, id)
+      where: eq(menu.id, id),
     })
   }
 
-  async list(dto: QueryRolePageDto) {
-    {
+  async list(dto: QueryMenuPageDto) {
+    const likeCondition = this.paginationService.likeCondition(menu.title, dto.title)
+    const pageList = await this.db.select().from(menu).where(likeCondition)
 
-      // const conditions = [
-      //   this.paginationService.likeCondition(menu.name, dto.name),
-      //   this.paginationService.likeCondition(menu.code, dto.code),
-      //   this.paginationService.eqCondition(menu.status, dto.status),
-      // ].filter(Boolean);
+    // 生成一个空的 MetaDto 实例，再转为普通对象（获取所有属性名）
+    const emptyMetaDto = plainToInstance(MenuMetaVo, {})
+    const metaKeys = Object.keys(instanceToPlain(emptyMetaDto)) as (keyof MenuMetaVo)[]
 
-      // const where = conditions.length > 0 ? and(...conditions) : undefined;
+    const list = pageList.map((it) => {
+      const meta = pick(it, metaKeys)
+      return {
+        ...omit(it, metaKeys),
+        meta,
+      }
+    })
 
-      const { ...rest } = getTableColumns(menu)
-      // 2. 调用通用分页方法
-      return this.paginationService.paginate(
-        menu,
-        {
-          page: dto.page,
-          pageSize: dto.pageSize
-        },
-        undefined,
-        {
-          columns: { ...rest },
-          orderBy: { createTime: 'desc' },
-        })
-    }
+    return this.buildTree(plainToInstance(MenuListVo, list), null)
   }
 
   async del(id: string) {
     try {
       await this.db.delete(menu).where(eq(menu.id, id))
       return '删除成功'
-    } catch (error) {
+    }
+    catch (error) {
       throw new BadRequestException(error)
     }
   }
 
-  async addOrUpdate(dto: AddOrUpdateRoleDto) {
+  async addOrUpdate(dto: AddOrUpdateMenuDto) {
+    const { id, ...rest } = dto
 
+    const result = { ...rest, ...rest.meta }
+    if (id) {
+      const queryMenu = await this.db.query.menu.findFirst({
+        where: eq(menu.id, id),
+      })
+      if (!queryMenu) {
+        throw new BadRequestException('菜单id无效')
+      }
+      await this.db.update(menu).set(result).where(eq(menu.id, id))
+      return '修改成功'
+    }
+
+    await this.db.insert(menu).values(result)
+    return '新增成功'
   }
 }

@@ -1,6 +1,6 @@
-import { relations } from 'drizzle-orm'
-import { mysqlTable, timestamp, varchar } from 'drizzle-orm/mysql-core'
+import { datetime, mysqlTable, varchar } from 'drizzle-orm/mysql-core'
 import { createId, role, user } from './index'
+import { sql } from 'drizzle-orm'
 
 export const userRole = mysqlTable('user_role_relation', {
   id: varchar('id', { length: 10 })
@@ -15,25 +15,12 @@ export const userRole = mysqlTable('user_role_relation', {
     .notNull()
     .references(() => role.id, { onDelete: 'cascade' }),
 
-  createTime: timestamp('create_time')
+  createTime: datetime('create_time', { mode: 'string' })
     .notNull()
-    .defaultNow(),
-
-  updatedTime: timestamp('updated_time')
+    .default(sql`CURRENT_TIMESTAMP`),
+  updateTime: datetime('update_time', { mode: 'string' })
     .notNull()
-    .defaultNow()
-    .onUpdateNow(),
+    .default(sql`CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`),
 })
 
-export const userRoleRelation = relations(userRole, ({ one }) => ({
-  // 中间表关联到用户
-  user: one(user, {
-    fields: [userRole.userId],
-    references: [user.id],
-  }),
-  // 中间表关联到角色
-  role: one(role, {
-    fields: [userRole.roleId],
-    references: [role.id],
-  }),
-}))
+
