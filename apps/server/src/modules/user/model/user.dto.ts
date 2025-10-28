@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { Type } from 'class-transformer'
 import { IsEmail, IsNotEmpty, IsOptional, Length } from 'class-validator'
-import { Type } from 'class-transformer';
-import { QueryPageDto } from 'src/common/model/page.dto';
+import { QueryPageDto } from 'src/common/model/page.dto'
 
 export class LoginDto {
   @ApiProperty({
@@ -36,7 +36,6 @@ export class RegisterDto {
   @IsNotEmpty({ message: '密码不能为空' })
   password: string
 }
-
 
 export class QueryUserDto extends QueryPageDto {
   @ApiProperty({ description: '用户名', required: false })
@@ -105,4 +104,3 @@ export class AddOrUpdateUserDto {
   @IsNotEmpty({ message: '所属角色不能为空' })
   roles: string[]
 }
-

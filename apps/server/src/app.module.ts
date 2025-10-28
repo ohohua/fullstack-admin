@@ -3,9 +3,9 @@ import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { MinioModule } from './common/minio/minio.module'
 import { GlobalModule } from './modules/global/global.module'
-import { UserModule } from './modules/user/user.module'
-import { RoleModule } from './modules/role/role.module'
 import { MenuModule } from './modules/menu/menu.module'
+import { RoleModule } from './modules/role/role.module'
+import { UserModule } from './modules/user/user.module'
 
 @Module({
   imports: [
@@ -13,7 +13,7 @@ import { MenuModule } from './modules/menu/menu.module'
     UserModule,
     MinioModule,
     RoleModule,
-    MenuModule
+    MenuModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,8 +1,8 @@
+import type { AxiosError } from 'axios'
 import type { UseProRequestPlugin } from '../types'
+import { $t, isI18nKey } from '@/locales/locales'
 import { isFunction } from 'lodash-es'
 import { useMessage } from 'naive-ui'
-import { $t, isI18nKey } from '@/locales/locales'
-import type { AxiosError } from 'axios'
 
 declare module '../types' {
   interface UseProRequestOptions<Data, Params extends any[]> {

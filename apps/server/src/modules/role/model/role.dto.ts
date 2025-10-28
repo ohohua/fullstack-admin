@@ -1,6 +1,6 @@
-import { ApiProperty } from "@nestjs/swagger"
-import { IsOptional, IsNotEmpty } from "class-validator"
-import { QueryPageDto } from "src/common/model/page.dto"
+import { ApiProperty } from '@nestjs/swagger'
+import { IsNotEmpty, IsOptional } from 'class-validator'
+import { QueryPageDto } from 'src/common/model/page.dto'
 
 export class QueryRolePageDto extends QueryPageDto {
   @ApiProperty({ description: '角色名', required: false })

@@ -1,8 +1,8 @@
 import type { DropdownOption } from 'naive-ui'
+import { $t } from '@/locales/locales'
 import { Icon } from '@iconify/vue'
 import { h, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { $t } from '@/locales/locales'
 
 export function useContextMenu() {
   const router = useRouter()

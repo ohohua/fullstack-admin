@@ -16,14 +16,18 @@ export class MenuService {
   @Inject(PaginationService)
   private paginationService: PaginationService
 
+  /**
+   * 构建菜单树
+   * @param menus
+   * @param parentId
+   */
   private buildTree(menus: MenuListVo[], parentId: string | null) {
-    // 1. 筛选出当前父节点的直接子节点（parentId 等于传入的 parentId）
+    // 找到当前 parentId 的子菜单
     const children = menus.filter(menu => menu.parentId === parentId)
 
-    // 2. 递归为每个子节点查找其下的子节点
     return children.map(child => ({
-      ...child, // 复制当前节点的所有属性
-      children: this.buildTree(menus, child.id), // 递归查找子节点的子节点
+      ...child,
+      children: this.buildTree(menus, child.id),
     }))
   }
 

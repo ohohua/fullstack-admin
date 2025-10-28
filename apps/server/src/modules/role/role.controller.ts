@@ -1,9 +1,9 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Query } from '@nestjs/common';
-import { RoleService } from './role.service';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Auth } from 'src/common/decorators/auth.decorator';
-import { RoleInfoVo, RoleListVo } from './model/role.vo';
-import { QueryRolePageDto, AddOrUpdateRoleDto } from './model/role.dto';
+import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Query } from '@nestjs/common'
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { Auth } from 'src/common/decorators/auth.decorator'
+import { AddOrUpdateRoleDto, QueryRolePageDto } from './model/role.dto'
+import { RoleInfoVo, RoleListVo } from './model/role.vo'
+import { RoleService } from './role.service'
 
 @ApiTags('角色管理')
 @Controller('role')

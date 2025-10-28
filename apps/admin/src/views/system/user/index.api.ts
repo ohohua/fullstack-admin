@@ -1,7 +1,7 @@
 import type { SetOptional } from 'type-fest'
 import type { genderMapping, statusMapping } from './utils/constants'
-import { isNil } from 'lodash-es'
 import http from '@/utils/axios'
+import { isNil } from 'lodash-es'
 
 type GenderEnum = keyof typeof genderMapping
 type StatusEnum = keyof typeof statusMapping

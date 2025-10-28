@@ -1,6 +1,6 @@
+import { sql } from 'drizzle-orm'
 import { datetime, mysqlTable, varchar } from 'drizzle-orm/mysql-core'
 import { createId, permission, role } from './index'
-import { sql } from 'drizzle-orm'
 
 export const rolePermission = mysqlTable('role_permission', {
   id: varchar('id', { length: 10 })

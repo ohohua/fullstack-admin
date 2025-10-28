@@ -1,9 +1,9 @@
 import type { ProRouterPlugin } from '@pro/router'
 import type { RouteLocationNormalized } from 'vue-router'
+import { useLayoutStore } from '@/store/use-layout-store'
 import { getRouteComponentName, isEqualRoute } from '@pro/router'
 import { useEventListener } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
-import { useLayoutStore } from '@/store/use-layout-store'
 import { ROOT_ROUTE_NAME } from '../routes'
 
 declare module 'vue-router' {

@@ -2,9 +2,9 @@ import { Global, Logger, Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { JwtModule } from '@nestjs/jwt'
 import { AuthModule } from './auth/auth.module'
+import { PaginationModule } from './pagination/pagination.module'
 import { AuthProvider } from './providers/auth.provider'
 import { DB, DbProvider } from './providers/db.provider'
-import { PaginationModule } from './pagination/pagination.module';
 
 const logger = new Logger('Global')
 

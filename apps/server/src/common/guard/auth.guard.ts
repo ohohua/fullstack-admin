@@ -52,7 +52,6 @@ export class AuthGuard implements CanActivate {
     }
 
     try {
-
       const data = this.jwtService.verify<JwtUserData>(authorization.replace('Bearer ', ''))
 
       request.user = {

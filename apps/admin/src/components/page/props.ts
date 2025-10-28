@@ -1,5 +1,5 @@
-import type { ExtractPublicPropTypes, PropType } from 'vue'
 import type { LoadingOptions } from '@/directive/loading/types'
+import type { ExtractPublicPropTypes, PropType } from 'vue'
 
 export const proPageProps = {
   /**

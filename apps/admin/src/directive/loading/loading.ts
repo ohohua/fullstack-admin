@@ -1,10 +1,10 @@
 import type { CSSProperties } from 'vue'
 import type { LoadingOptions, LoadingOptionsResolved } from './types'
+import Spinner from '@/components/spin/index.vue'
+import { useThemeStore } from '@/store/use-theme-store'
 import { isString } from 'lodash-es'
 import { NSpin } from 'naive-ui'
 import { camelize, computed, h, mergeProps, reactive, render, toRefs } from 'vue'
-import Spinner from '@/components/spin/index.vue'
-import { useThemeStore } from '@/store/use-theme-store'
 
 export function createLoadingInstance(resolvedOptions: LoadingOptionsResolved) {
   const themeStore = useThemeStore()

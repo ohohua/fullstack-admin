@@ -1,6 +1,6 @@
+import { sql } from 'drizzle-orm'
 import { datetime, int, mysqlTable, varchar } from 'drizzle-orm/mysql-core'
 import { createId } from './index'
-import { sql } from 'drizzle-orm'
 
 export const user = mysqlTable('user', {
   id: varchar('id', { length: 10 })
@@ -20,6 +20,5 @@ export const user = mysqlTable('user', {
     .default(sql`CURRENT_TIMESTAMP`),
   updateTime: datetime('update_time', { mode: 'string' })
     .notNull()
-    .default(sql`CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`), 
+    .default(sql`CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`),
 })
-

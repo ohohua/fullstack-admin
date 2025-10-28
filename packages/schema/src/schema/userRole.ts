@@ -1,6 +1,6 @@
+import { sql } from 'drizzle-orm'
 import { datetime, mysqlTable, varchar } from 'drizzle-orm/mysql-core'
 import { createId, role, user } from './index'
-import { sql } from 'drizzle-orm'
 
 export const userRole = mysqlTable('user_role_relation', {
   id: varchar('id', { length: 10 })
@@ -22,5 +22,3 @@ export const userRole = mysqlTable('user_role_relation', {
     .notNull()
     .default(sql`CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`),
 })
-
-

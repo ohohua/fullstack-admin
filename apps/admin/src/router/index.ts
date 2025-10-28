@@ -6,6 +6,12 @@ import type {
 import type { App } from 'vue'
 import type { RouteMeta } from 'vue-router'
 
+import IframeContainer from '@/components/iframe/index.vue'
+
+import { $t } from '@/locales/locales'
+import { useAppStore } from '@/store/use-app-store'
+import { useUserStore } from '@/store/use-user-store'
+import http from '@/utils/axios'
 import {
   autoRedirectPlugin,
   breadcrumbPlugin,
@@ -21,14 +27,8 @@ import {
   transitionPlugin,
   visitedRoutesPlugin,
 } from '@pro/router'
-
 import { h } from 'vue'
 import { createWebHistory } from 'vue-router'
-import IframeContainer from '@/components/iframe/index.vue'
-import { $t } from '@/locales/locales'
-import { useAppStore } from '@/store/use-app-store'
-import { useUserStore } from '@/store/use-user-store'
-import http from '@/utils/axios'
 import { layoutFalsyPlugin } from './plugins/layout-falsy-plugin'
 import { stateCleanupPlugin } from './plugins/state-cleanup-plugin'
 import { tabsPlugin } from './plugins/tabs-plugin'

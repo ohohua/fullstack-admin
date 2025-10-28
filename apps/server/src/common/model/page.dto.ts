@@ -1,6 +1,6 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { Type } from "class-transformer";
-import { IsOptional, IsInt, Min } from "class-validator";
+import { ApiProperty } from '@nestjs/swagger'
+import { Type } from 'class-transformer'
+import { IsInt, IsOptional, Min } from 'class-validator'
 
 export class QueryPageDto {
   // 页码：必须是整数，且最小值为 1，可选（默认 1）
@@ -9,7 +9,7 @@ export class QueryPageDto {
   @IsInt({ message: 'page 必须是整数' })
   @Min(1, { message: 'page 最小值为 1' })
   @ApiProperty({ description: '页码', required: false, default: 1 })
-  page: number = 1;
+  page: number = 1
 
   // 每页条数：必须是整数，最小值为 1，最大值为 100，可选（默认 10）
   @IsOptional()
@@ -17,6 +17,5 @@ export class QueryPageDto {
   @IsInt({ message: 'limit 必须是整数' })
   @Min(1, { message: 'limit 最小值为 1' })
   @ApiProperty({ description: '每条页数', required: false, default: 10 })
-  pageSize: number = 10;
-
+  pageSize: number = 10
 }

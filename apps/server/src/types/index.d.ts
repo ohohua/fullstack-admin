@@ -12,16 +12,16 @@ export interface Response<T = any> {
  * - pageSize: 每页条数（默认10，范围1-100）
  */
 export interface PaginationParams {
-  page?: number;
-  pageSize?: number;
+  page?: number
+  pageSize?: number
 }
 /**
  * 分页查询结果
  * @template T 列表项类型（如用户、角色等实体）
  */
 export interface PaginationResult<T> {
-  list: T[]; // 当前页数据列表
-  total: number; // 总条数
-  page: number; // 当前页码（实际使用的页码，默认1）
-  pageSize: number; // 实际使用的页大小（默认10）
+  list: T[] // 当前页数据列表
+  total: number // 总条数
+  page: number // 当前页码（实际使用的页码，默认1）
+  pageSize: number // 实际使用的页大小（默认10）
 }

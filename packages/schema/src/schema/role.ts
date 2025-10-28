@@ -1,6 +1,6 @@
+import { sql } from 'drizzle-orm'
 import { datetime, int, mysqlTable, text, varchar } from 'drizzle-orm/mysql-core'
 import { createId } from './index'
-import { sql } from 'drizzle-orm'
 
 export const role = mysqlTable('role', {
   id: varchar('id', { length: 10 })
