@@ -10,6 +10,12 @@ import { MenuInfoVo, MenuListVo } from './model/menu.vo'
 export class MenuController {
   constructor(private readonly menuService: MenuService) { }
 
+  @ApiOperation({ summary: '插入菜单' })
+  @Get('init')
+  async init() {
+    return await this.menuService.init()
+  }
+
   @ApiOperation({ summary: '菜单信息' })
   @ApiResponse({ type: MenuInfoVo, status: HttpStatus.OK, description: '请求成功' })
   @Auth()

@@ -11,7 +11,7 @@ export const preferenceConfig = {
     /**
      * 权限模式
      */
-    accessMode: 'frontend',
+    accessMode: 'backend',
     /**
      * 语言
      */

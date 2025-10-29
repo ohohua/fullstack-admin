@@ -150,7 +150,7 @@ export async function setupRouter(app: App) {
             ...baseInfo,
             mode: 'backend',
             fetchRoutes: async () => {
-              const res = await http.get<RbacAccessPluginRouteRecordRawWithStringComponent[]>('/menus/all')
+              const res = await http.get<RbacAccessPluginRouteRecordRawWithStringComponent[]>('/menu/list')
               return res.data
             },
             resolveComponent: (component) => {

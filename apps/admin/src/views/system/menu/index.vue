@@ -44,6 +44,9 @@ const {
 
 const drawerForm = createProDrawerForm<Merge<SetOptional<Menu, 'id'>, { parentId: null | string }>>({
   onSubmit: (values) => {
+    // if (values.meta && !values.meta.linkMode) {
+    //   values.meta.linkMode = null
+    // }
     const data = {
       ...values,
       id: drawerForm.values.value.id,
@@ -64,7 +67,7 @@ const { run: runDeleteMenus } = useProRequest(Api.del, {
   },
 })
 
-const tableColumns = computed<ProDataTableColumns<Menu>>(() => {
+const tableColumns = computed<ProDataTableColumns<Merge<Menu, { parentId: string | null }>>>(() => {
   return [
     {
       title: $t('pages.system.menu.menuTitle'),
@@ -125,15 +128,14 @@ const tableColumns = computed<ProDataTableColumns<Menu>>(() => {
               size="small"
               text={true}
               onClick={() => {
-                drawerForm.show.value = true
                 drawerForm.values.value = {
                   ...row,
-                  parentId: null,
                   meta: {
                     layout: true,
                     ...(row.meta ?? {} as any),
                   },
                 }
+                drawerForm.open()
               }}
             >
               {$t('common.often.edit')}

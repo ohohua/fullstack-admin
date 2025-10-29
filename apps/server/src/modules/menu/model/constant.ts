@@ -1,59 +1,8 @@
-import type { Component } from 'vue'
-import type { RouteRecordRaw } from 'vue-router'
-
-/**
- * 登录路由名称
- */
-const LOGIN_ROUTE_PATH = '/login'
-
-/**
- * 根路由，所有的动态路由都会添加到这个路由下
- */
-const ROOT_ROUTE_NAME = 'Root'
-
-const notFoundRoute: RouteRecordRaw = {
-  path: '/:path(.*)*',
-  component: () => import('@/views/demos/fallback/404.vue'),
-  meta: {
-    title: '404',
-  },
-}
-
-/**
- * 根路由，所有的动态路由都会添加到这个路由下
- */
-const rootRoute = {
-  path: '/',
-  name: ROOT_ROUTE_NAME,
-  component: () => import('@/components/layout/index.vue'),
-  children: [],
-  meta: {
-    hideInBreadcrumb: true,
-  },
-}
-
-/**
- * 忽略权限的路由
- */
-const ignoreAccessRoutes: RouteRecordRaw[] = [
-  {
-    path: LOGIN_ROUTE_PATH,
-    component: () => import('@/views/login/index.vue'),
-    meta: {
-      title: '登录',
-      titleI18nKey: 'routes.login',
-      requiresAuth: false,
-    },
-  },
-]
-
-/**
- * 权限路由，前端权限模式下会使用该数据
- */
-const accessRoutes: RouteRecordRaw[] = [
+export const accessRoutes = [
   {
     path: '/home',
-    component: () => import('@/views/home/index.vue'),
+    component: '/home/index.vue',
+    type: 1,
     meta: {
       title: '首页',
       titleI18nKey: 'routes.home',
@@ -69,7 +18,7 @@ const accessRoutes: RouteRecordRaw[] = [
         children: [
           {
             path: 'toggle',
-            component: () => import('@/views/demos/access/toggle/index.vue'),
+            component: '/demos/access/toggle/index.vue',
             meta: {
               title: '权限切换',
               titleI18nKey: 'routes.accessToggle',
@@ -88,7 +37,7 @@ const accessRoutes: RouteRecordRaw[] = [
         children: [
           {
             path: '403',
-            component: () => import('@/views/demos/fallback/403.vue'),
+            component: '/demos/fallback/403.vue',
             meta: {
               title: '403',
               titleI18nKey: 'routes.403',
@@ -97,7 +46,7 @@ const accessRoutes: RouteRecordRaw[] = [
           },
           {
             path: '404',
-            component: () => import('@/views/demos/fallback/404.vue'),
+            component: '/demos/fallback/404.vue',
             meta: {
               title: '404',
               titleI18nKey: 'routes.404',
@@ -106,7 +55,7 @@ const accessRoutes: RouteRecordRaw[] = [
           },
           {
             path: '500',
-            component: () => import('@/views/demos/fallback/500.vue'),
+            component: '/demos/fallback/500.vue',
             meta: {
               title: '500',
               titleI18nKey: 'routes.500',
@@ -133,7 +82,6 @@ const accessRoutes: RouteRecordRaw[] = [
             children: [
               {
                 path: 'form',
-                component: {},
                 meta: {
                   title: '复杂表单',
                   titleI18nKey: 'routes.complexForm',
@@ -144,7 +92,6 @@ const accessRoutes: RouteRecordRaw[] = [
               },
               {
                 path: 'edit-data-table',
-                component: {},
                 meta: {
                   title: '编辑表格',
                   titleI18nKey: 'routes.editTable',
@@ -155,7 +102,6 @@ const accessRoutes: RouteRecordRaw[] = [
               },
               {
                 path: 'baidu-iframe',
-                component: {},
                 meta: {
                   title: '百度',
                   titleI18nKey: 'routes.baiduIframe',
@@ -166,7 +112,7 @@ const accessRoutes: RouteRecordRaw[] = [
               },
               {
                 path: 'menu',
-                component: () => import('@/views/system/menu/index.vue'),
+                component: '/system/menu/index.vue',
                 meta: {
                   title: '菜单管理',
                   titleI18nKey: 'routes.menuManagementIframe',
@@ -186,7 +132,6 @@ const accessRoutes: RouteRecordRaw[] = [
             children: [
               {
                 path: 'vite',
-                component: {},
                 meta: {
                   icon: 'logos:vitejs',
                   title: 'Vite',
@@ -195,7 +140,6 @@ const accessRoutes: RouteRecordRaw[] = [
               },
               {
                 path: 'vue',
-                component: {},
                 meta: {
                   icon: 'logos:vue',
                   title: 'Vue',
@@ -204,7 +148,7 @@ const accessRoutes: RouteRecordRaw[] = [
               },
               {
                 path: 'menu-layout-falsy',
-                component: () => import('@/views/system/menu/index.vue'),
+                component: '/system/menu/index.vue',
                 meta: {
                   title: '无布局',
                   titleI18nKey: 'routes.noLayout',
@@ -214,7 +158,7 @@ const accessRoutes: RouteRecordRaw[] = [
               },
               {
                 path: 'menu',
-                component: () => import('@/views/system/menu/index.vue'),
+                component: '/system/menu/index.vue',
                 meta: {
                   title: '菜单管理',
                   titleI18nKey: 'routes.menuManagementExternal',
@@ -233,7 +177,7 @@ const accessRoutes: RouteRecordRaw[] = [
       {
         path: 'download',
         name: 'Download',
-        component: () => import('@/views/demos/download/index.vue'),
+        component: '/demos/download/index.vue',
         meta: {
           title: '文件下载',
           titleI18nKey: 'routes.fileDownload',
@@ -242,11 +186,11 @@ const accessRoutes: RouteRecordRaw[] = [
       },
       {
         path: 'nested-detail',
-        component: () => import('@/views/demos/nested/index.vue'),
+        component: '/demos/nested/index.vue',
         children: [
           {
             path: 'detail',
-            component: () => import('@/views/demos/nested/detail.vue'),
+            component: '/demos/nested/detail.vue',
             meta: {
               title: '详情页',
               titleI18nKey: 'routes.detail',
@@ -262,13 +206,13 @@ const accessRoutes: RouteRecordRaw[] = [
       },
       {
         path: 'nested-detail2',
-        component: () => import('@/views/demos/nested/demo2/index.vue'),
+        component: '/demos/nested/demo2/index.vue',
         redirect: { name: 'nestedDetail2:detail1' }, //
         children: [
           {
             path: 'detail1',
             name: 'nestedDetail2:detail1',
-            component: () => import('@/views/demos/nested/demo2/detail1.vue'),
+            component: '/demos/nested/demo2/detail1.vue',
             meta: {
               title: '详情页（1）',
               titleI18nKey: 'routes.detail1',
@@ -278,7 +222,7 @@ const accessRoutes: RouteRecordRaw[] = [
           {
             path: 'detail2',
             name: 'nestedDetail2:detail2',
-            component: () => import('@/views/demos/nested/demo2/detail2.vue'),
+            component: '/demos/nested/demo2/detail2.vue',
             meta: {
               title: '详情页（2）',
               titleI18nKey: 'routes.detail2',
@@ -298,7 +242,7 @@ const accessRoutes: RouteRecordRaw[] = [
         children: [
           {
             path: 'demo1',
-            component: () => import('@/views/demos/keep-alive/demo1.vue'),
+            component: '/demos/keep-alive/demo1.vue',
             meta: {
               title: '基础缓存',
               titleI18nKey: 'routes.keepAliveDemo1',
@@ -307,7 +251,7 @@ const accessRoutes: RouteRecordRaw[] = [
           },
           {
             path: 'demo2',
-            component: () => import('@/views/demos/keep-alive/demo2.vue'),
+            component: '/demos/keep-alive/demo2.vue',
             meta: {
               title: '条件缓存',
               titleI18nKey: 'routes.keepAliveDemo2',
@@ -326,7 +270,7 @@ const accessRoutes: RouteRecordRaw[] = [
       {
         path: 'tabs',
         name: 'Tabs',
-        component: () => import('@/views/demos/tabs/index.vue'),
+        component: '/demos/tabs/index.vue',
         meta: {
           title: '多标签',
           titleI18nKey: 'routes.tabs',
@@ -335,7 +279,7 @@ const accessRoutes: RouteRecordRaw[] = [
       },
       {
         path: 'page-component',
-        component: () => import('@/views/demos/page-component/index.vue'),
+        component: '/demos/page-component/index.vue',
         meta: {
           title: '页面级组件',
           titleI18nKey: 'routes.pageComponent',
@@ -344,7 +288,7 @@ const accessRoutes: RouteRecordRaw[] = [
       },
       {
         path: 'editor',
-        component: () => import('@/views/demos/wang-editor/index.vue'),
+        component: '/demos/wang-editor/index.vue',
         meta: {
           title: '富文本',
           titleI18nKey: 'routes.richText',
@@ -353,7 +297,7 @@ const accessRoutes: RouteRecordRaw[] = [
       },
       {
         path: 'complex-form',
-        component: () => import('@/views/demos/complex-form/index.vue'),
+        component: '/demos/complex-form/index.vue',
         meta: {
           title: '复杂表单',
           titleI18nKey: 'routes.complexForm',
@@ -362,7 +306,7 @@ const accessRoutes: RouteRecordRaw[] = [
       },
       {
         path: 'icon',
-        component: () => import('@/views/demos/icon/index.vue'),
+        component: '/demos/icon/index.vue',
         meta: {
           title: '图标选择器',
           titleI18nKey: 'routes.iconSelector',
@@ -371,7 +315,7 @@ const accessRoutes: RouteRecordRaw[] = [
       },
       {
         path: 'loading',
-        component: () => import('@/views/demos/loading/index.vue'),
+        component: '/demos/loading/index.vue',
         meta: {
           title: 'Loading 指令',
           titleI18nKey: 'routes.loading',
@@ -390,7 +334,7 @@ const accessRoutes: RouteRecordRaw[] = [
     children: [
       {
         path: 'user',
-        component: () => import('@/views/system/user/index.vue'),
+        component: '/system/user/index.vue',
         meta: {
           title: '用户管理',
           titleI18nKey: 'routes.userManagement',
@@ -400,7 +344,7 @@ const accessRoutes: RouteRecordRaw[] = [
       },
       {
         path: 'role',
-        component: () => import('@/views/system/role/index.vue'),
+        component: '/system/role/index.vue',
         meta: {
           title: '角色管理',
           titleI18nKey: 'routes.roleManagement',
@@ -410,7 +354,7 @@ const accessRoutes: RouteRecordRaw[] = [
       },
       {
         path: 'menu',
-        component: () => import('@/views/system/menu/index.vue'),
+        component: '/system/menu/index.vue',
         meta: {
           title: '菜单管理',
           titleI18nKey: 'routes.menuManagement',
@@ -426,23 +370,3 @@ const accessRoutes: RouteRecordRaw[] = [
     },
   },
 ]
-
-/**
- * 页面组件映射，后端权限模式下会使用该数据
- */
-const matched = import.meta.glob('@/views/**/*.vue')
-const pageMap = Object.entries(matched).reduce<Record<string, Component>>((p, [path, value]) => {
-  const finalPath = `/${path.split('/').slice(3).join('/')}`
-  p[finalPath] = value
-  return p
-}, {})
-
-export {
-  accessRoutes,
-  ignoreAccessRoutes,
-  LOGIN_ROUTE_PATH,
-  notFoundRoute,
-  pageMap,
-  ROOT_ROUTE_NAME,
-  rootRoute,
-}

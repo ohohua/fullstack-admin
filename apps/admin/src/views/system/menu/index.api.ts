@@ -21,7 +21,7 @@ export interface Menu {
     hideInTabs?: boolean
     titleI18nKey?: string
     link?: string | true
-    linkMode?: LinkModeEnum
+    linkMode?: LinkModeEnum | null
     hideInBreadcrumb?: boolean
   }
 }

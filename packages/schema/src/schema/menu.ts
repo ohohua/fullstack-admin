@@ -1,5 +1,5 @@
 import { sql } from 'drizzle-orm'
-import { boolean, datetime, int, mysqlTable, text, varchar } from 'drizzle-orm/mysql-core'
+import { datetime, int, json, mysqlTable, varchar } from 'drizzle-orm/mysql-core'
 import { createId } from '.'
 
 export const menu = mysqlTable('menu', {
@@ -18,56 +18,64 @@ export const menu = mysqlTable('menu', {
   /**
    * 路由地址
    */
-  path: varchar({ length: 255 }).notNull().unique(),
+  path: varchar({ length: 255 }).notNull(),
   /**
    * 前端组件
    */
   component: varchar({ length: 255 }),
   /**
-   * 图标
+   * 重定向配置
    */
-  icon: varchar({ length: 255 }),
+  redirect: json('redirect'),
   /**
-   * 菜单国际化标题 key
+   * 路由元属性, 会自动序列化
    */
-  titleI18nKey: varchar({ length: 255 }),
-  /**
-   * 外链模式 iframe-内嵌 newWindow-外链
-   */
-  linkMode: varchar('link_mode', { length: 20 }),
-  // meta
-  /**
-   * 菜单标题
-   */
-  title: varchar({ length: 255 }),
-  /**
-   * 外接地址
-   */
-  link: text(),
-  /**
-   * 菜单排序
-   */
-  order: int(),
-  /**
-   * 是否隐藏菜单
-   */
-  hideInMenu: boolean().default(false),
-  /**
-   * 是否在标签页隐藏
-   */
-  hideInTabs: boolean().default(false),
-  /**
-   * 是否在面包屑隐藏
-   */
-  hideInBreadcrumb: boolean().default(false),
-  /**
-   * 是否缓存页面
-   */
-  keepAlive: boolean().default(false),
-  /**
-   * 页面包含布局
-   */
-  layout: boolean().default(false),
+  meta: json('meta').notNull(), 
+  // /**
+  //  * 图标
+  //  */
+  // icon: varchar({ length: 255 }),
+  // /**
+  //  * 菜单国际化标题 key
+  //  */
+  // titleI18nKey: varchar('title_i18_key', { length: 255 }),
+  // /**
+  //  * 外链模式 iframe-内嵌 newWindow-外链
+  //  */
+  // linkMode: varchar('link_mode', { length: 20 }),
+  // // meta
+  // /**
+  //  * 菜单标题
+  //  */
+  // title: varchar({ length: 255 }),
+  // /**
+  //  * 外接地址
+  //  */
+  // link: text(),
+  // /**
+  //  * 菜单排序
+  //  */
+  // order: int(),
+  // /**
+  //  * 是否隐藏菜单
+  //  */
+  // hideInMenu: boolean('hid_in_menu').default(false),
+  // /**
+  //  * 是否在标签页隐藏
+  //  */
+  // hideInTabs: boolean('hide_in_tabs').default(false),
+  // /**
+  //  * 是否在面包屑隐藏
+  //  */
+  // hideInBreadcrumb: boolean('hide_in_breadcrumb').default(false),
+  // /**
+  //  * 是否缓存页面
+  //  */
+  // keepAlive: boolean('keep_alive').default(false),
+  // /**
+  //  * 页面包含布局
+  //  */
+  // layout: boolean().default(false),
 
   createTime: datetime('create_time', { mode: 'string' })
     .notNull()

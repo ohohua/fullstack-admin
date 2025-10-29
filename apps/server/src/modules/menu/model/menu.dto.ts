@@ -76,8 +76,6 @@ export class AddOrUpdateMenuDto {
   @IsOptional()
   component: string
 
-  @ValidateNested({ message: 'meta 格式错误' })
   @ApiProperty({ description: '菜单元信息', type: MetaDto })
-  @Type(() => MetaDto)
-  meta: MetaDto
+  meta: JSON
 }
