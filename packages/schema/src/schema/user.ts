@@ -9,7 +9,7 @@ export const user = mysqlTable('user', {
   username: varchar({ length: 20 }).notNull().unique(),
   nickname: varchar({ length: 20 }).notNull(),
   gender: int().notNull().default(-1),
-  password: varchar({ length: 64 }).notNull(),
+  password: varchar({ length: 255 }).notNull(),
   email: varchar({ length: 64 }).notNull().unique(),
   phone: varchar({ length: 20 }).notNull(),
   remark: varchar({ length: 255 }),

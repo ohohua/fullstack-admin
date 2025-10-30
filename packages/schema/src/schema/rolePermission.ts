@@ -1,6 +1,6 @@
 import { sql } from 'drizzle-orm'
 import { datetime, mysqlTable, varchar } from 'drizzle-orm/mysql-core'
-import { createId, permission, role } from './index'
+import { createId } from './index'
 
 export const rolePermission = mysqlTable('role_permission', {
   id: varchar('id', { length: 10 })
@@ -8,12 +8,10 @@ export const rolePermission = mysqlTable('role_permission', {
     .$defaultFn(() => createId()),
 
   roleId: varchar('role_id', { length: 10 })
-    .notNull()
-    .references(() => role.id, { onDelete: 'cascade' }),
+    .notNull(),
 
   permissionId: varchar('permission_id', { length: 10 })
-    .notNull()
-    .references(() => permission.id, { onDelete: 'cascade' }),
+    .notNull(),
 
   createTime: datetime('create_time', { mode: 'string' })
     .notNull()

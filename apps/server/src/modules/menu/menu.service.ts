@@ -27,14 +27,6 @@ export class MenuService {
     }))
   }
 
-  private handleLink(link: any) {
-    if (link === undefined || link === '' || link === null) {
-      return null; // 空值统一转为 null
-    }
-    // 若 URL 有非法字符（如空格），可额外编码（# 无需编码）
-    return encodeURI(link).replace(/%23/g, '#'); // 确保 # 不被编码为 %23
-  };
-
   /**
    * 递归插入初始化菜单
    * @param menus 
@@ -47,9 +39,6 @@ export class MenuService {
         parentId,
         type: item.component ? 1 : 0,
       }
-      // if (newMenu.meta.link) {
-      //   newMenu.meta.link = this.handleLink(newMenu.meta.link)
-      // }
       const [row] = await this.db.insert(menu).values(newMenu).$returningId()
 
       if (item.children && item.children.length > 0) {
@@ -73,15 +62,6 @@ export class MenuService {
   async list(dto: QueryMenuPageDto) {
     // const likeCondition = this.paginationService.likeCondition(menu.title, dto.title)
     const pageList = await this.db.select().from(menu)
-
-    // 生成一个空的 MetaDto 实例，再转为普通对象（获取所有属性名）
-    // const emptyMetaDto = plainToInstance(MenuMetaVo, {})
-    // const metaKeys = Object.keys(instanceToPlain(emptyMetaDto)) as (keyof MenuMetaVo)[]
-
-    // const list = pageList.map((it) => {
-    //   const meta = JSON.parse(it.meta as string)
-    //   return { ...it, meta }
-    // })
 
     return this.buildTree(plainToInstance(MenuListVo, pageList), null)
   }

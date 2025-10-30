@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { Type } from 'class-transformer'
-import { IsEmail, IsNotEmpty, IsOptional, Length } from 'class-validator'
+import { IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber, Length } from 'class-validator'
 import { QueryPageDto } from 'src/common/model/page.dto'
 
 export class LoginDto {
@@ -31,10 +31,36 @@ export class RegisterDto {
 
   @ApiProperty({
     example: '123456',
-    description: '密码不能为空,长度应在6-20位之间',
+    description: '密码不能为空',
   })
   @IsNotEmpty({ message: '密码不能为空' })
   password: string
+
+  @ApiProperty({ description: '昵称', required: true })
+  @IsNotEmpty({ message: '昵称不能为空' })
+  @Length(2, 20, { message: '昵称长度为2-20位' })
+  nickname: string
+
+  @ApiProperty({ description: '性别', required: true })
+  @IsNotEmpty({ message: '性别不能为空' })
+  gender: number
+
+  @ApiProperty({ description: '邮箱', required: true })
+  @IsNotEmpty({ message: '邮箱不能为空' })
+  @IsEmail()
+  email: string
+
+  @ApiProperty({ description: '手机', required: true })
+  @IsNotEmpty({ message: '手机号不能为空' })
+  @IsPhoneNumber('CN', { message: '手机号格式不正确' })
+  phone: string
+
+  @ApiProperty({ description: '备注', required: false })
+  remark: string
+
+  @ApiProperty({ description: '状态', required: true })
+  @IsNotEmpty({ message: '状态不能为空' })
+  status: number
 }
 
 export class QueryUserDto extends QueryPageDto {
