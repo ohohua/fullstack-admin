@@ -1,5 +1,5 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common'
-import { role } from '@ohohua/schema'
+import { role, rolePermission } from '@ohohua/schema'
 import { and, eq, getTableColumns } from 'drizzle-orm'
 import { PaginationService } from '../global/pagination/pagination.service'
 import { DB } from '../global/providers/db.provider'
@@ -56,6 +56,27 @@ export class RoleService {
   }
 
   async addOrUpdate(dto: AddOrUpdateRoleDto) {
-    return dto
+    const roleContent = {
+      name: dto.name,
+      code: dto.code,
+      remark: dto.remark,
+      status: Number(dto.status),
+    }
+    if (dto.id) {
+      await this.db.update(role).set(roleContent).where(eq(role.id, dto.id))
+      return '修改成功'
+    }
+
+    this.db.transaction(async (tx) => {
+      const [row] = await tx.insert(role).values(roleContent).$returningId()
+
+      for (const menuId of dto.permission) {
+        await tx.insert(rolePermission).values({
+          roleId: row.id,
+          permissionId: menuId,
+        })
+      }
+    })
+    return '新增成功'
   }
 }

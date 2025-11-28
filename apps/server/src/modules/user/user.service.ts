@@ -8,6 +8,7 @@ import { PaginationService } from '../global/pagination/pagination.service'
 import { DB, DbType } from '../global/providers/db.provider'
 import { AddOrUpdateUserDto, LoginDto, QueryUserDto, RegisterDto } from './model/user.dto'
 import { CryptoUtil } from 'src/utils/crypto'
+import { USER_STATUS } from '@ohohua/common'
 
 const logger = new Logger('UserService')
 @Injectable()
@@ -56,6 +57,10 @@ export class UserService {
     const isVerify = await CryptoUtil.verify(decryptedPassword, loginUser.password)
     if (!isVerify) {
       throw new BadRequestException('密码错误')
+    }
+
+    if (loginUser.status !== USER_STATUS.ENABLE) {
+      throw new BadRequestException('该用户已禁用')
     }
 
     return {

@@ -9,7 +9,7 @@
   "scripts": {
     "preinstall": "pnpm dlx only-allow pnpm",
     "depend:init": "pnpm --filter @ohohua/common run build",
-    "db:init": "pnpm --filter @ohohua/schema run build && pnpm --filter @ohohua/db run init",
+    "db:init": "pnpm --filter @ohohua/schema run build && pnpm --filter @ohohua/common run build && pnpm --filter @ohohua/db run init",
     "db:studio": "pnpm --filter @ohohua/db db:studio",
     "docker:start": "docker-compose up -d",
     "docker:stop": "docker compose stop",

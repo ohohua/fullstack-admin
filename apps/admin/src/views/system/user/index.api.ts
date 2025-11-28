@@ -50,7 +50,7 @@ export class Api {
    * 获取用户详情
    */
   static get(id: string) {
-    return http.get<User>(`/system/user/${id}`)
+    return http.get<User>(`/user/${id}`)
   }
 
   /**
@@ -68,13 +68,13 @@ export class Api {
    * 删除用户
    */
   static del(id: string) {
-    return http.delete(`/system/user/${id}`)
+    return http.delete(`/user/${id}`)
   }
 
   /**
    * 获取角色列表
    */
   static roleList() {
-    return http.get<Role[]>('/system/role/list')
+    return http.get<Role[]>('/role/list')
   }
 }

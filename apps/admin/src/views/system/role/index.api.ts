@@ -10,6 +10,7 @@ export interface Role {
   name: string
   code: string
   status: StatusEnum
+  permission: string[]
   remark?: string
   createTime: string
   updateTime: string

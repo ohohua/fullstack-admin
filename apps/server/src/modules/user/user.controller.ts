@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpStatus, Post, Query } from '@nestjs/common'
+import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Query } from '@nestjs/common'
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { Auth } from 'src/common/decorators/auth.decorator'
 import { UserInfo } from 'src/common/decorators/user-info.decorator'
@@ -33,10 +33,10 @@ export class UserController {
     return await this.service.register(dto)
   }
 
-  @ApiOperation({ summary: '用户信息' })
+  @ApiOperation({ summary: '当前用户信息' })
   @ApiResponse({ type: InfoVo, status: HttpStatus.OK, description: '请求成功' })
-  @Auth()
   @Get('info')
+  @Auth()
   async info(@UserInfo('id') userId: string) {
     return await this.service.info(userId)
   }
@@ -60,8 +60,18 @@ export class UserController {
   @ApiOperation({ summary: '删除用户' })
   @ApiResponse({ type: InfoVo, status: HttpStatus.OK, description: '请求成功' })
   @Auth()
-  @Delete('add')
+  @Delete()
   async del(@Query() query: QueryUserDto) {
     return await this.service.list(query)
   }
+
+  @ApiOperation({ summary: '被查询的用户信息' })
+  @ApiResponse({ type: InfoVo, status: HttpStatus.OK, description: '请求成功' })
+  @Auth()
+  @Get(':id')
+  async otherInfo(@Param('id') id: string) {
+    return await this.service.info(id)
+  }
 }
+
+

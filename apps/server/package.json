@@ -26,6 +26,7 @@
     "@ohohua/db": "workspace:*",
     "@ohohua/schema": "workspace:*",
     "@prisma/client": "^6.4.1",
+    "clashofclans.js": "^3.5.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "dotenv-cli": "^8.0.0",

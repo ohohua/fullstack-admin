@@ -29,6 +29,10 @@ export class AddOrUpdateRoleDto {
   @IsNotEmpty({ message: '角色编码不能为空' })
   code: string
 
+  @ApiProperty({ description: '权限id列表', required: true })
+  @IsNotEmpty({ message: '权限列表不能为空' })
+  permission: string[]
+
   @ApiProperty({ description: '状态', required: true })
   @IsNotEmpty({ message: '角色状态不能为空' })
   status: string

@@ -18,6 +18,7 @@
   "dependencies": {
     "@ant-design/colors": "^7.2.1",
     "@iconify/vue": "^5.0.0",
+    "@ohohua/common": "workspace:*",
     "@pro/router": "workspace:*",
     "@unocss/preset-wind3": "^66.2.0",
     "@unocss/reset": "^66.2.0",

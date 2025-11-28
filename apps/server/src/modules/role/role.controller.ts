@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Query } from '@nestjs/common'
+import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Query } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { Auth } from 'src/common/decorators/auth.decorator'
 import { AddOrUpdateRoleDto, QueryRolePageDto } from './model/role.dto'
@@ -26,11 +26,19 @@ export class RoleController {
     return await this.roleService.list(query)
   }
 
-  @ApiOperation({ summary: '新增/编辑角色' })
+  @ApiOperation({ summary: '新增角色' })
   @ApiResponse({ type: String, status: HttpStatus.OK, description: '请求成功' })
   @Auth()
-  @Post('addOrUpdate')
-  async addOrUpdate(@Body() dto: AddOrUpdateRoleDto) {
+  @Post()
+  async insertRole(@Body() dto: AddOrUpdateRoleDto) {
+    return await this.roleService.addOrUpdate(dto)
+  }
+
+  @ApiOperation({ summary: '编辑角色' })
+  @ApiResponse({ type: String, status: HttpStatus.OK, description: '请求成功' })
+  @Auth()
+  @Put()
+  async updateRole(@Body() dto: AddOrUpdateRoleDto) {
     return await this.roleService.addOrUpdate(dto)
   }
 

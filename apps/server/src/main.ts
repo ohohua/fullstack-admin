@@ -16,7 +16,7 @@ async function bootstrap() {
   // 允许跨域
   app.enableCors({ origin: [/^http:\/\/localhost(:\d+)?$/, /^http:\/\/xxx\.xxx\.com(:81)?$/] })
   // 启用管道校验
-  app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true })) // transform: true 将参数转化为Dto实例
+  app.useGlobalPipes(new ValidationPipe({ transform: true, })) // transform: true 将参数转化为Dto实例
   // 启用修改响应格式拦截器
   app.useGlobalInterceptors(new FormatResponseInterceptor())
   // 所有异常过滤

@@ -6,8 +6,8 @@ export const permission = mysqlTable('permission', {
   id: varchar('id', { length: 10 })
     .primaryKey()
     .$defaultFn(() => createId()),
-  name: varchar({ length: 255 }),
-  code: varchar({ length: 64 }).notNull().unique(), // 权限标识
+  name: varchar({ length: 255 }), // 存菜单name
+  code: varchar({ length: 64 }).notNull().unique(), // 权限标识 存菜单id
   description: text(),
 
   createTime: datetime('create_time', { mode: 'string' })

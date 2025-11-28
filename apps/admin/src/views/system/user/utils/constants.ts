@@ -1,4 +1,5 @@
 import { createOptionsAndMapping } from '@/utils/common'
+import { USER_STATUS } from '@ohohua/common'
 
 export const {
   options: genderOptions,
@@ -15,6 +16,6 @@ export const {
   mapping: statusMapping,
   mapping2: statusToColorMapping,
 } = createOptionsAndMapping([
-  ['1', 'common.often.enable', 'success'],
-  ['0', 'common.often.disable', 'error'],
+  [USER_STATUS.ENABLE, 'common.often.enable', 'success'],
+  [USER_STATUS.DISABLE, 'common.often.disable', 'error'],
 ])

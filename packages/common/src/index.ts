@@ -1,1 +1,1 @@
-export enum COMPONENT_TYPE {}
+export * from './user.enum'

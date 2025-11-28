@@ -2,8 +2,10 @@ import { Module } from '@nestjs/common'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { MinioModule } from './common/minio/minio.module'
+import { CocModule } from './modules/coc/coc.module'
 import { GlobalModule } from './modules/global/global.module'
 import { MenuModule } from './modules/menu/menu.module'
+import { PermissionModule } from './modules/permission/permission.module'
 import { RoleModule } from './modules/role/role.module'
 import { UserModule } from './modules/user/user.module'
 
@@ -14,6 +16,8 @@ import { UserModule } from './modules/user/user.module'
     MinioModule,
     RoleModule,
     MenuModule,
+    PermissionModule,
+    CocModule,
   ],
   controllers: [AppController],
   providers: [AppService],

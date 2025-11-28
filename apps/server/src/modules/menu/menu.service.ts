@@ -3,14 +3,18 @@ import { menu } from '@ohohua/schema'
 import { plainToInstance } from 'class-transformer'
 import { eq } from 'drizzle-orm'
 import { DB, DbType } from '../global/providers/db.provider'
+import { PermissionService } from '../permission/permission.service'
 import { accessRoutes } from './model/constant'
-import { AddOrUpdateMenuDto, QueryMenuPageDto } from './model/menu.dto'
+import { AddOrUpdateMenuDto, MetaDto, QueryMenuPageDto } from './model/menu.dto'
 import { MenuListVo } from './model/menu.vo'
 
 @Injectable()
 export class MenuService {
   @Inject(DB)
   private db: DbType
+
+  @Inject(PermissionService)
+  private permissionService: PermissionService
 
   /**
    * 构建菜单树
@@ -29,7 +33,6 @@ export class MenuService {
 
   /**
    * 递归插入初始化菜单
-   * @param menus 
    */
   private async recursiveInsertion(accessRoutes: any[], parentId: string | null) {
     for (const item of accessRoutes) {
@@ -41,16 +44,21 @@ export class MenuService {
       }
       const [row] = await this.db.insert(menu).values(newMenu).$returningId()
 
+      // 同时新增对应的访问权限
+      await this.permissionService.insert({
+        name: item.meta.title,
+        code: `${row.id}`,
+        description: `访问权限-${item.meta.title}`,
+      })
+
       if (item.children && item.children.length > 0) {
         this.recursiveInsertion(item.children, row.id)
       }
-
     }
-
   }
 
   async init() {
-    return this.recursiveInsertion(accessRoutes, null);
+    return this.recursiveInsertion(accessRoutes, null)
   }
 
   async info(id: string) {
@@ -59,7 +67,7 @@ export class MenuService {
     })
   }
 
-  async list(dto: QueryMenuPageDto) {
+  async list(_dto: QueryMenuPageDto) {
     // const likeCondition = this.paginationService.likeCondition(menu.title, dto.title)
     const pageList = await this.db.select().from(menu)
 
@@ -89,7 +97,17 @@ export class MenuService {
       return '修改成功'
     }
 
-    await this.db.insert(menu).values(result)
+    const [row] = await this.db.insert(menu).values(result).$returningId()
+
+    // 同时新增对应的访问权限
+    const meta: MetaDto = JSON.parse(rest.meta as any)
+
+    await this.permissionService.insert({
+      name: meta.title,
+      code: `${row.id}`,
+      description: `访问权限-${meta.title}`,
+    })
+
     return '新增成功'
   }
 }
